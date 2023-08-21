@@ -1,0 +1,294 @@
+{% load static %}
+{% include "header.html" %}
+{% load humanize %}
+
+        <section>
+            <div class="feature-photo mt-14">
+               
+                <!-- <figure><img class="img-responsive" src={% static 'images/resources/timeline-1.png' %} alt=""></figure> -->
+                <div class="badges-container ">
+                
+                    <div class="badges" >
+                        
+                        <div class="row1">
+                            <div class="gold rows"  title="Get a total of 1000 likes to get Gold Medal">
+                                <div class="col">
+                                    <img src="../static/images/badges/gold.png" alt="">
+                                    <span>Gold medal</span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                            <div class="silver rows"  title="Get a total of 500 likes to get Silver Medal">
+                                <div class="col">
+                                    <img src="../static/images/badges/silver.png" alt="">
+                                    <span>Silver medal</span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                            <div class="bronze rows"  title="Get a total of 100 likes to get Bronze Medal">
+                                <div class="col">
+                                    <img src="../static/images/badges/bronze.png" alt="">
+                                    <span>Bronze medal</span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                            <div class="trophy rows" title="Get a total of 100 likes to get Bronze Medal">
+                                <div class="col">
+                                    <img src="../static/images/badges/trophy.png" alt="">
+                                    <span>populist Reward</span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                        </div>
+                        <div class="row1 row2">
+                            <div class="maxlikes rows" title="Get max likes on posts for three days to get reward ">
+                                <div class="col">
+                                    <img src="../static/images/badges/maxlikes-3days.png" alt="">
+                                    <span>Top Liked </span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                            <div class="famous-questions rows" title="Post 50 queries to get reward">
+                                <div class="col">
+                                    <img src="../static/images/badges/famous-questions.png" alt="">
+                                    <span>Famous Question</span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                            <div class="active-user rows" title="Log-in Daily for 100 days to get reward">
+                                <div class="col">
+                                    <img src="../static/images/badges/active-user.png" alt="">
+                                    <span>Active User</span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                            <div class="best-answer rows" title="Give 50 best Answers on posts to get reward">
+                                <div class="col">
+                                    <img src="../static/images/badges/answer.png" alt="">
+                                    <span>Famous Answers</span>
+                                </div>
+                                <h1 class="count">0</h1>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="add-btn -mb-2 d-none d-lg-block  text-center border-sky-600 rounded">
+                    <ins class="ml-3 mt-1 text-4xl text-sky-700 text-decoration-none" id="FollowersCount" >{{count_followers}}</ins>
+                    <span > followers</span>
+                    {% if guest != 1 %}
+                    {% if user_data.id != currentid.id %}
+                        
+                     {% if follower_data %}
+                     
+                     <button onclick="follow_user(event,{{user_data.id}},{{currentid.id}})" id="followbutton" class="bg-sky-700 hover:bg-sky-800 transition-all btn-sm duration-300 mb-2 mr-1 hover:scale-105  rounded py-2 px-4  text-white "  type="submit"><span >Unfollow</span></button>
+
+                     
+                     {% else %}
+                     <button onclick="follow_user(event,{{user_data.id}},{{currentid.id}})" id="followbutton" class="bg-sky-700 hover:bg-sky-800 transition-all btn-sm duration-300 mb-2 mr-1 hover:scale-105  rounded py-2 px-4  text-white" type="submit"><span>Follow</span></button>
+                     {% endif %}
+                        
+                        
+                       
+                    {% endif %}
+                    {% endif %}
+                    
+                </div>
+               
+                <div class="container-fluid">
+                    <div class="row merged">
+                        <div class="col-lg-2  col-sm-3">
+                            <div class="user-avatar hidden lg:block">
+                                <figure>
+                        {% comment %} {% if user_data.id != currentid.id %} {% endcomment %}
+                         {% if user_data.User_Image %}
+                         <img class="card-img-top bg-white" style=" vertical-align: middle;width: 225px;height: 200px;border-radius: 2%; " src={{ user_data.User_Image.url }} alt="static\images\resources\no-profile.jpg">
+                        
+                          {% else %}
+                            <img class="card-img-top" style=" vertical-align: middle;width: 225px;height: 200px;border-radius: 2%;" src="static\images\resources\no-profile.jpg">
+                            {% endif %}
+                           {% comment %} {% endif %} {% endcomment %}
+                           {% if user_data.id == currentid.id %}
+                                    <form action={% url 'userimage' user_data.id %} class="edit-phto" method="POST">
+                                        {% csrf_token %}
+                                       
+                                        <i class="fa fa-camera-retro"></i>
+                                        <label class="fileContainer">
+										Edit Display Photo
+										<input name="image" type="file" />
+									    </label>
+                                        <button class="mtr-btn signin" type="submit"><span>Change</span></button>
+                                       
+                                    </form>
+                                    {% endif %}
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-lg-10 col-sm-9 hidden lg:block">
+                            <div class="timeline-info">
+                                <ul>
+                                    <li class="admin-name">
+                                        <h5>{{user_data.completename}}</h5>
+                                        
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- top area -->
+
+        <script>
+            function follow_user(event,user_id,current_id)
+            {
+                
+                var text=document.getElementById("followbutton").innerText
+                
+                if (text == "Follow")
+                {
+                    var count = $("#FollowersCount").html();
+                    count++;
+                    document.getElementById("FollowersCount").innerHTML = count;
+                    document.getElementById("followbutton").innerText="Unfollow";
+                    
+                    let txt='UnFollow'
+                   
+                    
+                    postdata={
+                        "CHECK_FOLLOW":txt,
+                        "user_id":user_id,
+                        "current_id":current_id
+                        
+                        
+                    }
+                    SendDataToServer("follow",postdata,function()
+                {
+                    alert()
+                }) 
+                    
+                }
+                else if  (text == "Unfollow"){
+                    var count = $("#FollowersCount").html();
+                    count--;
+                    document.getElementById("FollowersCount").innerHTML = count;
+                    document.getElementById("followbutton").innerText="Follow"
+                    let txt='Follow'
+                   
+                    
+                    postdata={
+                        "CHECK_FOLLOW":txt,
+                        "user_id":user_id,
+                        "current_id":current_id
+                        
+                        
+                    }
+                    SendDataToServer("follow",postdata,function()
+                {
+                    alert()
+                }) 
+
+
+
+
+                  }
+
+                
+            }
+            
+            function SendDataToServer(url,PostData,callback)
+            {
+             
+                
+                $.ajax({
+                    dataType:"json",
+                    type: "POST",
+                    url: url,
+                    data: PostData,
+                    success: function(data){
+                       if(callback){
+                       
+                           callback(data);
+                       }
+                    },
+                    error: function(data){}
+                  });
+            }
+
+        
+        </script>
+
+{% include 'center.html' %}
+
+{% include 'post.html' %}
+<!-- <div class="col-lg-3">
+    <aside class="sidebar static">
+        <div class="widget  shadow-md ">
+            <h4 class="widget-title">Who's follownig</h4>
+            <div  id="searchDir"></div>
+            {% for p in follow_data %}
+
+            
+
+                <ul id="people-list" class="followers" class="friendz-list">
+                   <div>
+                    <li >
+                        
+                    <figure  >
+                        {% if p.whos_following.User_Image %}
+                        <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ p.whos_following.User_Image.url}} alt="">
+                         {% else %}
+                          <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+        
+                         {% endif %}
+                    </figure>
+                    <div class="friendz-meta">
+                    
+                        <h4>
+
+                            <form action={% url 'timeline' %} method="post">
+                                {% csrf_token %}
+                                <input type="hidden"  name=profile_idd value="{{p.whos_following.id}}"/>
+                            <button type="submit"   class="text-sky-700  text-bold -ml-3  text-capitalize" >{{p.whos_following.completename}}</button>
+                            </form>
+                      </h4>
+                    
+
+                      {% if follower_data %}
+                     
+                      <a   class="underline">Followed</a>
+
+                      
+                      {% else %}
+                      <a onclick="follow_user_back(event,{{p.whos_following.id}},{{currentid.id}})" id="followbutton{{p.whos_following.id}}"  class="underline">Follow Back</a>
+                      {% endif %}
+
+
+
+
+
+                            
+                    </div>
+                
+
+                </li>
+            </div>
+                                                              
+            </ul>
+
+            {% endfor %}
+        </div>
+        <! who's following -->
+       
+        
+    <!-- </aside> -->
+<!-- </div> -->
+
+
+</div>
+</div>
+</section>
+{% include 'footer.html' %}

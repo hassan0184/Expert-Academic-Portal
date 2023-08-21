@@ -1,0 +1,161 @@
+{% load static %}
+
+          <section>
+            <div class="gap gray-bg">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row" id="page-contents">
+                                <div class="col-lg-3">
+                                    <aside class="sidebar static">
+
+
+
+                                       {% comment %} {% if guest != 1 %} {% endcomment %}
+                                        {% comment %} <div class="widget">
+                                            <div class="singin">
+                                                <h4 class="widget-title">Login</h4>
+                                                <form action={% url 'login' %} method="POST">
+
+                                                    {% csrf_token %}
+                                                    <input id="input" type="email" name="useremail" placeholder="User Email">
+                                                    <input id="password" type="password" name="userpassword" placeholder="Password">
+                                                    <input type="hidden" id="USER_TYPE" name="user_change" value="user"/>
+                                                    <div class="checkbox">
+                                                      <label>
+                                                        <input type="checkbox" checked="checked"><i class="check-box"></i>
+                                                         <span>Remember Me</span>
+                                                      </label>
+                                                    </div>
+                                                    
+                                                    <button class="  btn-primary  active " type="submit">Log In</button>
+                                                </form>
+                                            </div>	
+                                        </div> {% endcomment %}
+                                        {% comment %} {% endif %} {% endcomment %}
+                                       {% if timeline_check == True %}
+                                      
+                                        <div id="Profileintro" class="widget border d-none  d-lg-inline">
+                                         
+                                           
+                                            <h4 class="widget-title">Profile intro</h4>
+                                            <ul class="short-profile">
+                                                <li>
+                                                    <span>about</span>
+                                                    <p>{{user_data.AboutMe | safe}} </p>
+                                                </li>
+                                                <li>
+                                                    <span>Study at</span>
+                                                    <p>{{user_data.Current_Education_Place}}</p>
+                                                    <p class="font-weight-bold ">From:[{{user_data.Current_Education_Date_From}}]</p>
+                                                    <p class="font-weight-bold">To:[{{user_data.Current_Education_Date_To}}]</p>
+                                               
+                                                </li>
+                                                <li>
+                                                    <span>Interest</span>
+                                                    <p>{{user_data.Interest}}</p>
+                                                </li>
+                                            </ul>
+                                        </div><!-- profile intro widget -->
+                                        {% endif %}
+
+
+                                        <div class="widget flex d-none d-lg-inline lg:flex-row flex-column w-100  shadow-md">
+                                            <h4 class="widget-title">Recent Activity</h4>
+                                            {% for i in dataa|slice:":5" %}
+                                            <ul class="activitiez">
+                                                <li>
+                                                    <div class="activity-meta">
+                                                        <i>{{i.Posted_Date}}</i>
+                                                        <span><a href="#post{{i.id}}" title="">{{i.Title}} </a></span>
+
+                                                        <form action={% url 'timeline' %} method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden"  name=profile_idd value="{{i.user_id.id}}"/>
+                                                        <button type="submit"   class="text-sky-700  text-bold -ml-3  text-capitalize" >{{i.user_id.completename}}</button>
+                                                        </form>
+                                                        {% comment %} <h6>by <a href="newsfeed.html">{{i.user_id.completename}}</a></h6> {% endcomment %}
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                                
+                                                {% endfor %}
+                                                
+                                            
+                                        </div>
+
+                                        
+                                        {% if admin != 1 %}
+                                        {% if guest != 1 %}
+                                        <!-- <div class="widget shadow-md rounded-md stick-widget">
+                                            <h4 class="widget-title hidd">Shortcuts</h4>
+                                            <ul class="naves">
+                                                <li>
+                                                    <i class="ti-clipboard"></i>
+                                                    <a href="{% url 'home' %}" title="">News feed</a>
+                                                </li>
+                                                
+                                                
+                                                <li>
+                                                    <i class="ti-user"></i>
+                                                    <a href="{% url 'timeline' %}" title="">Timeline</a>
+                                                </li>
+                                                
+                                               
+                                               
+                                                
+                                               
+                                                <li>
+                                                    <i class="ti-power-off"></i>
+                                                    <a href={% url 'logout' %} title="">Logout</a>
+                                                </li>
+                                            </ul>
+                                        </div> -->
+                                        {% endif %}
+                                        {% endif %}
+
+
+
+                                        
+                                        <!-- Shortcuts -->
+                                        
+                                        <!-- recent activites -->
+
+
+                                       
+                                    </aside>
+                                </div>
+                                <!-- sidebar -->
+                                <div class="col-lg-6">
+                                    <div class="">
+
+
+                                        
+
+                                        {% if search != 1 %}
+                                        {% if admin != 1 %}
+                                          <div>
+                                            <form action={% url 'home' %} method=POST>
+                                                {% csrf_token %} 
+    
+                                            <div class="relative flex flex-row-reverse -mb-8  w-full ">
+                                                <input type="search" name="search" class="bg-purple-white shadow-sm rounded border-0  px-3 py-2 mt-1" placeholder="Search Post">
+                                                <div class="absolute pin-r pin-t mt-3 border-0 mr-2 text-purple-lighter">
+                                                    <svg version="1.1" class="h-4 text-dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                   viewBox="0 0 52.966 52.966" style="enable-background:new 0 0 52.966 52.966;" xml:space="preserve">
+                                                      <path d="M51.704,51.273L36.845,35.82c3.79-3.801,6.138-9.041,6.138-14.82c0-11.58-9.42-21-21-21s-21,9.42-21,21s9.42,21,21,21
+                                                      c5.083,0,9.748-1.817,13.384-4.832l14.895,15.491c0.196,0.205,0.458,0.307,0.721,0.307c0.25,0,0.499-0.093,0.693-0.279
+                                                      C52.074,52.304,52.086,51.671,51.704,51.273z M21.983,40c-10.477,0-19-8.523-19-19s8.523-19,19-19s19,8.523,19,19
+                                                      S32.459,40,21.983,40z"/>
+                                              
+                                                  </svg>
+                                              
+                                                </div>
+                                              </div>
+                                            </form> 
+                                    </div>
+                                    {% endif %}
+                                    {% endif %}
+                                    
+                                    <div class="mt-5">
+                                    </div>

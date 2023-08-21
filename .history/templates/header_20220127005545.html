@@ -1,0 +1,438 @@
+
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>Home Expert Academic Portal</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href={% static '../media/logo.png' %} type="image/png" sizes="16x16">
+    <link rel="stylesheet" href= {% static 'css/main.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/style.css' %}>
+    <link rel="stylesheet" href={% static 'css/color.css' %}>
+    <link rel="stylesheet" href={% static 'css/responsive.css' %}>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Muli:300,400,400i,500,700,800');
+
+    .font-family-muli {
+        font-family: Muli;
+    }
+</style>
+
+<body>
+    
+       
+
+    <!-- Create A Post Modal  -->
+      
+    <!-- Large Modal 111111111111111111111111111111111111111111111111111111 -->
+    <div class="hidden overflow-x-hidden bg-black bg-opacity-75    overflow-y-auto absolute top-15 flex  md:inset-0 z-50 justify-center items-center modal h-modal sm:h-full" id="">
+        <div class="relative w-full  max-w-4xl px-4 h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex bg-gray-100 items-center justify-between p-3 border-b rounded-t dark:border-gray-600">
+                    
+                    <!-- Users -->
+
+                   
+                    <div class="flex mb-6">
+                        
+                        {% if currentid.User_Image %}
+                         <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src={{ currentid.User_Image.url }} alt="">
+                         {% else %}
+                        <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+                        {% endif %}
+                        
+                        <h3 class="ml-3 mt-3 text-lg font-semibold">{{currentid.completename}}</h3>
+                    
+                    </div>
+                    <!-- <h3 class="text-blue-900  text-xl font-medium dark:text-white">
+                        What Do You Want to Ask or Share?
+                    </h3> -->
+                    <button type="button" class="text-gray-400 close   rounded-lg text-sm p-1.5 ml-auto inline-flex items-center  dark:hover:text-black" data-modal-toggle="large-modal">
+                        <svg class="w-5 h-5 bg-red-500 text-semibold text-xl" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form action={% url 'new_query' %} method="POST" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                 <div >
+                   <textarea name="title"  id="query_title" class="  dark:bg-gray-800  text-2xl focus:ring-0 border-none" cols="60" rows="6" placeholder="Start Your Question with 'What', 'How', 'Why', etc. "></textarea>
+                 </div>
+                 
+              
+                 <!-- Modal footer -->
+                 <div class="flex  bg-gray-100 space-x-2 justify-end space items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button onclick="temp(event)"  data-modal-toggle="large-modal" type="button" class="text-white dark:bg-blue-700 mr-10 bg-blue-700 hover:bg-blue-800  next222 font-medium rounded post text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
+                    <button data-modal-toggle="large-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100  cancel focus:ring-gray-300 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">Cancel</button>
+                 </div>
+            </div>
+        </div>
+     </div>
+     <!-- modal 22222222222222222222222222222222222222222222 -->
+     <div class="hidden overflow-x-hidden bg-black bg-opacity-75    overflow-y-auto absolute top-15 flex  md:inset-0 z-50 justify-center items-center modal2 h-modal sm:h-full" id="">
+        <div class="relative w-full  max-w-4xl px-4 h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
+                <!-- Modal header -->
+
+                
+                <div class="flex bg-gray-100 items-center justify-between p-3 border-b rounded-t dark:border-gray-600">
+                    
+                    <!-- Users -->
+                    <div class="flex mb-6">
+                        {% if user_data.User_Image %}
+                         <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src={{ user_data.User_Image.url }} alt="">
+                         {% else %}
+                        <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+                        {% endif %}
+                    
+                        <h3 class=" col-span-2 row-span-1 text-lg mt-3  text-black font-semibold">{{user_data.completename}}</h3>
+                        
+                    </div>
+                    
+                     
+                </div>
+                <div class=" flex p-5  flex-row justify-around">
+                    <div class="">
+                        
+                        <div class=" space-y-2">
+                          <div class="">
+                            <label class="inline-flex items-center">
+                              <input type="checkbox" class="query_tag" name="querytype" value="History"  class="form-checkbox" checked />
+                              <span class="">History</span>
+                            </label>
+                          </div>
+                          <div>
+                            <label class="inline-flex items-center">
+                              <input type="checkbox" class="query_tag" name="querytype" value="Literature and Language"  class="form-checkbox" />
+                              <span class="">Literature,Language</span>
+                            </label>
+                          </div>
+                          <div>
+                            <label class="inline-flex items-center">
+                              <input type="checkbox" class="query_tag" name="querytype" value="Math"  class="form-checkbox" />
+                              <span class="">Math</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div
+                      
+                      <div class="">
+                        
+                        <div class="space-y-2">
+                          <div>
+                            <label class="inline-flex items-center">
+                              <input type="checkbox" name="querytype" value="Medicine and Health" class="form-checkbox"  />
+                              <span class="">Medicine and Health</span>
+                            </label>
+                          </div>
+                          <div>
+                            <label class="inline-flex items-center">
+                              <input type="checkbox" name="querytype" value="Science and Technology" class="form-checkbox" />
+                              <span class="ml-2">Science and Technology</span>
+                            </label>
+                          </div>
+                          <div>
+                            <label class="inline-flex items-center">
+                              <input type="checkbox" name="querytype" value="Arts and Humanities"  class="form-checkbox" />
+                              <span class="">Arts and Humanities</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div
+                
+           
+                <!-- Modal footer -->
+                <div class="flex bg-gray-100 space-x-2 justify-end space items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button onclick="temp(event)"  data-modal-toggle="large-modal" type="submit" class="text-white dark:bg-blue-900 mr-10 bg-blue-700 hover:bg-blue-800  submit222 font-medium rounded post text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 submit dark:focus:ring-blue-800">Post Query</button>
+                    
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+</div>
+    
+        <!-- responsive header -->
+        <div>
+            {% if messages %}
+            {% for message in messages %}
+              
+              <div class="alert alert-danger  alert-{{ message.tags }} alert-dismissible fade show">
+               <center class="font-weight-bold"> {{ message }}
+                  <span >
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                   {% if query_false == 1%}
+                   
+                    <button type="button" class="btn btn-sm btn-outline-danger font-weight-bold float-right class="close" data-dismiss="alert" aria-label="Close"" onclick="Conflict(event)" ><span aria-hidden="true">Raise Conflict</span></button>
+                    {% endif %} 
+                </span>
+               </center>
+               
+                   
+               
+              </div>
+              
+            {% endfor %}
+          {% endif %}
+         </div>
+        {% if admin != 1 %}
+        <div class="topbar stick">
+            <div class="logo">
+                
+                <a  title="" href={% url 'home' %}><img class="w-20 h-25" src="../media/logo.png" alt=""></a>
+                <!-- <img src="../media/logo.png" alt=""> -->
+            </div>
+            
+
+            
+            <div class="top-area -ml-10">
+                
+                <ul class="main-menu -space-x-3">
+                    <li >
+                        <a href={% url 'home' %} title="">Home</a>
+                       
+                    </li>
+                    <li>
+                        <a class="-ml-8" href={% url 'timeline'  %} title="">timeline</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#" title="">account settings</a>
+                        <ul>
+                            
+                           
+                            <li><a href="{% url 'edit' %}?vl=3 " title="">edit-interest</a></li>
+                            <li><a href={% url 'changepassword' %} title="">edit-password</a></li>
+                            <li><a href="{% url 'edit' %}?vl=1 " title="">edit profile basics</a></li>
+                            <li><a href="{% url 'edit' %}?vl=2 " title="">edit work educations</a></li>
+                         
+                            
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="" href="#Profileintro" title="" data-ripple="">about</a>
+                    </li>
+                
+                    
+                </ul>
+                <ul>
+
+
+                    <div class="flex  items-center ">
+                        <div class="mr-2 group  mt-1">
+                            <button class="createpost   bg-sky-600 text-white  border-0 px-3 py-2 hover:bg-sky-800 rounded transition duration-300  text-md ">
+                                  Post Query 
+                            </button>
+                        </div>
+            
+
+            <li>
+                        
+                <div >
+                 
+
+
+
+                   <form action={% url 'search_post' %} method=POST>
+                    {% csrf_token %} 
+                <div class="relative  flex flex-row-reverse mr-6 ">
+                    <input type="search" name="search_profile" class="bg-purple-white shadow-md rounded border-0 px-3 py-2 mt-1" placeholder="Search profile">
+                     <div class="absolute pin-r pin-t mt-3 border-0 mr-6 text-purple-lighter">
+                        
+                        <button class="btn btn-white">
+                             <svg version="1.1" class="h-4 text-dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                       viewBox="0 0 52.966 52.966" style="enable-background:new 0 0 52.966 52.966;" xml:space="preserve">
+                          <path d="M51.704,51.273L36.845,35.82c3.79-3.801,6.138-9.041,6.138-14.82c0-11.58-9.42-21-21-21s-21,9.42-21,21s9.42,21,21,21
+                          c5.083,0,9.748-1.817,13.384-4.832l14.895,15.491c0.196,0.205,0.458,0.307,0.721,0.307c0.25,0,0.499-0.093,0.693-0.279
+                          C52.074,52.304,52.086,51.671,51.704,51.273z M21.983,40c-10.477,0-19-8.523-19-19s8.523-19,19-19s19,8.523,19,19
+                          S32.459,40,21.983,40z"/>
+                  
+                      </svg> 
+                     </button>
+                
+                    </div> 
+                   
+                </form>
+
+                
+               </div>
+                
+            </li>
+         </div>
+                </ul>
+
+
+
+
+
+                <ul class="setting-area">
+                   
+                    
+                    <li>
+                            <a href="#" title="Notification" data-ripple="">
+                        
+                            <i class="ti-bell"></i>
+                            
+                            {% if  fetch_notification_count > 2 %}
+                            <span class="text-danger"> (2+) </span>
+                            {% else %}
+                            <span>{{fetch_notification_count}}</span>
+                            {% endif %}
+                        </a>
+                        <div class="dropdowns">
+                           
+                            <span>{{fetch_notification_count}} New Notifications</span>
+                        
+                            <ul class="drops-menu">
+                                {% for i in  fetch_notification %}
+                                <li>
+                                    <a href="notifications.html" title="">
+                                       
+                                            {% if i.show_user.User_Image %}
+                                            <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ i.show_user.User_Image.url}} alt="">
+                                            {% elif t == 1 %} 
+                                             <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ i.User_Image.url}} alt="">
+                                             {% else %}
+                                            <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+                                             
+                                             
+                                             {% endif %}
+                                        
+                            
+                                        <div class="mesg-meta">
+                                            
+                                                                        
+
+
+
+
+
+                                            <h6 >{{i.show_user.Name}}</h6>
+                                            
+                                            {% if i.notification_type == 'comment' %}
+                                            
+                                            <span>Commented on your post</span>
+                                            {% elif i.notification_type == 'like' %}
+                                            <span>Likes your post</span>
+                                            {% elif i.notification_type == 'dislike' %}
+                                            <span>Dislike your post</span>
+                                            {% endif %}
+                                            <i>{{i.notification_date | naturaltime}}</i>
+                                        </div>
+                                    </a>
+                                    <span class="tag green">New</span>
+                                </li>
+                                {% endfor %}
+                               
+                                
+                               
+                               
+                            </ul>
+                            <a href="notifications.html" title="" class="more-mesg">view more</a>
+                        </div>
+                    </li>
+                     
+                           
+                </ul>
+                {% if currentid.Gender == "FeMale" %}
+                <span class="text-blue-600  text-bold -ml-3  text-capitalize">Hello Ms,</span><span class="text-black text-capitalize bold"><a href={% url 'timeline' %}>{{currentid.completename}}</a></span>
+                {% endif %}
+                {% if currentid.Gender == "Male" %}
+                <span class="text-blue-600  text-bold -ml-3  text-capitalize">Hello Mr,</span><span class="text-black text-capitalize bold"><a href={% url 'timeline' %}>{{currentid.completename}}</a></span>
+                {% endif %}
+                <div class="user-img -mr-10">
+                    {% if currentid.User_Image %}
+                         <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src={{ currentid.User_Image.url }} alt="">
+                         {% else %}
+                         <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+                        {% endif %}
+                    {% comment %} <img src={% static 'images/resources/admin.jpg' %} alt=""> {% endcomment %}
+                    <span class="status f-online"></span>
+                    {% comment %} <div class="user-setting">
+                   
+                        <a href="{% url 'timeline' %}" ><i class="ti-user"></i> view profile</a>
+                        <a href="{% url 'edit' %}?vl=1 " ><i class="ti-pencil-alt"></i>Edit Basic info</a>
+                        <a href="{% url 'edit' %}?vl=2 " ><i class="ti-pencil-alt"></i>Edit Education & Work</a>
+                        <a href="{% url 'edit' %}?vl=3 "><i class="ti-pencil-alt"></i> My interests</a>
+                        <a href="{% url 'logout' %}"><i class="ti-power-off"></i>log out</a>
+                    </div> {% endcomment %}
+                </div>
+                <!-- <span class="ti-menu main-menu" data-ripple=""></span> -->
+            </div>
+        </div>
+        {% endif %}
+        <!-- topbar -->
+        <script >
+
+            
+            function temp(event)
+            {  
+                localStorage.setItem("queryTitle", $("#query_title").val());
+                
+                localStorage.setItem("queryTag", $(".query_tag").val());
+                
+                
+                
+                
+                
+            }
+            function  Conflict(event){
+                
+               
+               
+               
+                postdata={
+
+                    "message":localStorage.getItem("queryTitle"),
+                    
+                    "message_tag":localStorage.getItem("queryTag"),
+                    
+                }
+                
+               
+                SendDataToServer("adminprofile",postdata,function()
+                
+            {
+                
+            })
+            localStorage.clear(); 
+            swal("You Query Is Sent To Admin", ", Admin Will Contact You Sortly!", "success");
+
+            }
+            function SendDataToServer(url,PostData,callback)
+            {
+             
+                
+                $.ajax({
+                    dataType:"json",
+                    type: "POST",
+                    url: url,
+                    data: PostData,
+                    success: function(data){
+                       if(callback){
+                       
+                           callback(data);
+                       }
+                    },
+                    error: function(data){}
+                  });
+            }
+        </script>

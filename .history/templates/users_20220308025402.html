@@ -1,0 +1,123 @@
+{% load static %}
+{% include "header.html" %}
+{% load humanize %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+
+	<section>
+		<div class="gap100 no-top">
+			<div class="container">
+				<div class="row mt-5">
+					<div class="col-lg-12">
+						<div class="section-heading">
+							<h2>REGESTRED USERS</h2>
+						</div>
+                        <div class="ml-auto mr-auto forum-warper col-lg-10">
+							<div class="post-filter-sec">
+                                <form action={% url 'users' %} method=POST class="filter-form">
+                                    {% csrf_token %} 
+								
+									<input type="search" name="search_user" placeholder="Search By Name or Email">
+									<button><i class="ti-search"></i></button>
+								</form>
+								<div class="purify">
+									<span>filter by</span>
+                                    
+									{% comment %} <select> {% endcomment %}
+										<button>
+                                            <a href="{% url 'users' %}?vl=aes " class="hover:text-sky-700 "> 
+                                            Assending A-Z
+                                             </a>
+                                            </button>
+                                            <div>
+                                            <button>
+                                                <a href="{% url 'users' %}?vl=des " class="hover:text-sky-700 "> 
+                                                    Desending Z-A
+                                                 </a>
+                                                </button>
+                                            </div>
+										{% comment %} <option>Desending Z-A</option> {% endcomment %}
+										
+									{% comment %} </select> {% endcomment %}
+                                    
+									{% comment %} <a href="#">purify</a> {% endcomment %}
+								</div>
+							</div>
+						</div>
+					</div>	
+                    {% for i in regestered_users %}
+                    
+                    
+					<div class="col-lg-3 col-sm-6 mt-3 ml-lg-5" id="delete_user_complete{{i.id}}" >
+						<div class="our-teambox  ml-lg-5" >
+                            <button type="submit" onclick="delete_user(event,{{i.id}})" class="text-red-700 float-right mr-2 mt-2"><i class="fa fa-trash" ></i></button>
+
+                            {% if i.User_Image %}
+                            <figure><img class="card-img-top bg-white ml-auto mr-auto mt-3" style=" vertical-align: middle;width: 225px;height: 200px;border-radius: 2%; " src={{ i.User_Image.url }} alt="static\images\resources\no-profile.jpg"></figure>
+                           
+                           {% else %}
+                           <figure><img class="card-img-top ml-auto mr-auto mt-3" style=" vertical-align: middle;width: 225px;height: 200px;border-radius: 2%;" src="static\images\resources\no-profile.jpg"></figure>
+                           {% endif %}
+							{% comment %} <figure><img src="images/resources/team1.jpg" alt=""></figure> {% endcomment %}
+							<div class="team-info">
+								<h4>{{i.completename}}</h4>
+								<span>{{i.Email}}</span><br>
+                                <span>{{i.User_Type}}</span>
+							</div>
+                            
+
+						</div>
+
+					</div>
+					{% endfor %}
+					
+					
+				</div>
+			</div>
+		</div>
+	</section>
+<script>
+    function SendDataToServer(url, PostData, callback) {
+
+       
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: url,
+            data: PostData,
+            success: function(data) {
+                if (callback) {
+
+                    callback(data);
+                }
+            },
+            error: function(data) {
+                
+            }
+        });
+        
+    }
+    function delete_user(event, id) {
+        
+         
+        postdata = {
+
+            "post_id": id,
+           
+            
+
+        }
+        SendDataToServer("deleteuser", postdata, function(code) {
+            
+
+        })
+        
+        $("#delete_user_complete" + id).remove();
+        
+        
+
+    }
+    
+</script>
+{% include 'footer.html' %}

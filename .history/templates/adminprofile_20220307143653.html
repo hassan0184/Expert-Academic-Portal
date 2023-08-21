@@ -1,0 +1,235 @@
+{% load static %}
+{% include "header.html" %}
+{% load humanize %}
+{% include "center.html" %}  
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+
+
+
+
+
+
+
+{% load static %}
+{% load humanize %}
+<!-- User Post Is hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
+{% for i in data %}	
+<div id="post{{i.id}}">
+<div id="delete_post_complete{{i.id}}" class="central-meta item">
+   
+    <div class="user-post">
+        <div class="friend-info">
+            <figure>
+                {% if user_data.User_Image %}
+                <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ i.user_id.User_Image.url}} alt="">
+                 {% else %}
+                  <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+
+                 {% endif %}
+            </figure>
+
+
+
+
+
+            <div class="friend-name">
+               
+                <form action={% url 'timeline' %} method="post">
+                    {% csrf_token %}
+                    <input type="hidden"  name=profile_idd value="{{i.user_id.id}}"/>
+                <button type="submit"  class="text-blue-700 " >{{i.user_id.completename}}</button>
+                </form>
+                
+                
+                
+
+                <span>{{i.Posted_Date}}</span>
+            </div>
+
+           {% comment %} delete and update {% endcomment %}
+           
+                <div class="flex flex-row justify-end space-x-2 -mt-10 text-xl" >
+                    
+                    
+                    <input type="hidden" id="POST_ID{{i.id}}" name=POST_ID value="{{i.id}}"/>
+                    <input type="hidden" id="USER_ID{{i.id}}" name=useremailid value="{{i.user_id.id}}"/>
+                    <input type="hidden" id="USER_EMAIL{{i.id}}" name=useremailid value="{{i.user_id.Email}}"/>
+                    <button type="submit" onclick="delete_post(event,{{i.id}})" class="text-red-700 " ><i class="fa fa-window-close" ></i></button>
+                    <input type="hidden" id="RaisedQuery{{i.id}}" name=RaisedQuery value="{{i.Title}}"/>
+                    <input type="hidden" id="RaisedQueryTag{{i.id}}" name=RaisedQueryTag value="{{i.query_type}}"/>
+                    <button type="button"  onclick="approved_post(event,{{i.id}})"  class="text-green-700 "><i class="fa fa-check-square "></i></button>
+
+               
+                </div>
+
+            
+            </div>
+           
+            
+
+
+
+
+            <div class="post-meta">
+
+                <!-- Question Area -->
+                <div class="mh-3 my-3 mx-1 w-full">
+                    <p class="text-2xl text-black" id="updated_post_title{{i.id}}" style={word-wrap: break-word;}>{{i.Title}}</p>
+                </div> 
+
+               
+
+
+
+                            
+                <!-- Tags Title -->
+                <div class="we-video-info">
+                    
+                    <ul>
+                        <li>
+                            <h3 class="text-lg ">Tags</h3>
+                           
+                        </li>
+                    </ul>
+                </div>
+                <!-- Tage Generated will  goes here -->
+                <div class="we-video-info -mt-5">
+                <ul>
+                        <li>
+                            <button class="border-2 hover:bg-gray-200 font-black px-2 rounded w-auto ">#{{i.query_type}}</button>
+                        </li>
+                        
+                        </ul>
+                    </div>
+
+            </div>
+        </div>
+
+
+    
+ </div>
+</div>
+{% endfor %}
+
+
+                                
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-3">
+                            <aside class="sidebar static ">
+                                  
+                                <div class="widget  shadow-md ">
+                                    <h4 class="widget-title">Graph</h4>
+                                    <canvas id="chart" width="350" height="350"></canvas>
+                                    
+                                </div>
+                              
+                               
+                              
+                                <!-- who's following -->
+                               
+                                
+                            </aside>
+                        </div><!-- sidebar -->
+                    </div>
+                </div>
+        </section>
+        
+{% include 'footer.html' %}
+
+    <script>
+        let ctx = document.getElementById("chart").getContext("2d");
+
+let chart = new Chart(ctx, {
+
+
+type: 'multiplebar',
+data: {
+  labels:[{% for i in labels_graph %}  '{{ i }}',  {% endfor %}],
+  datasets: [{
+      
+    label: "Tag:",
+    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+    data: [{% for i in data_graph %}  '{{ i }}',  {% endfor %}]
+  }]
+},
+options: {
+    
+  title: {
+    display: true,
+    text: 'Trending Tags'
+    
+  }
+}
+});
+    </script>
+
+<script >
+
+    
+    function  approved_post(event,id) 
+    {
+        var userId=$("#USER_ID"+id).val()
+        var PostId=$("#POST_ID"+id).val()
+        var RaisedQuery=$("#RaisedQuery"+id).val()
+        var RaisedQueryTag=$("#RaisedQueryTag"+id).val()
+        var email=$("#USER_EMAIL"+id).val()
+        postdata={
+            
+            "RaisedQuery":RaisedQuery,
+            "RaisedQueryTag":RaisedQueryTag,
+            "userId":userId,
+            "post_id":PostId,
+            "email":email
+        }
+        SendDataToServer("approved_post",postdata,function(code)
+        {    
+            
+            
+        }) 
+        $("#delete_post_complete"+id).remove();
+        
+       
+       
+
+    }
+    function  delete_post(event,id){
+       
+        var email=$("#USER_EMAIL"+id).val()
+        
+        postdata={
+            
+            "post_id":id,
+            "email":email
+        }
+        SendDataToServer("raised_post_delete",postdata,function(code)
+        {    
+            
+            
+        }) 
+        $("#delete_post_complete"+id).remove();
+       
+
+    }
+    function SendDataToServer(url,PostData,callback)
+    {
+     
+        
+        $.ajax({
+            dataType:"json",
+            type: "POST",
+            url: url,
+            data: PostData,
+            success: function(data){
+               if(callback){
+               
+                   callback(data);
+               }
+            },
+            error: function(data){}
+          });
+    }
+</script>

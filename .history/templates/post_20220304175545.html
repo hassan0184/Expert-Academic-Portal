@@ -1,0 +1,796 @@
+{% load static %} {% load humanize %}
+
+<!-- User Post Is hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
+{% for i in data %}
+
+<div id="post{{i.id}}">
+<div id="delete_post_complete{{i.id}}" class="central-meta item shadow-md rounded-xl col-lg-12">
+
+    <div class="user-post">
+        <div class="friend-info ">
+            <figure>
+                {% if i.user_id.User_Image and t != 1 %}
+                <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ i.user_id.User_Image.url}} alt="">
+                {% elif t == 1 %} 
+                
+                 <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ i.User_Image.url}} alt="">
+                 {% else %}
+                <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+                 
+                 
+                 {% endif %}
+            </figure>
+
+            <div class="friend-name">
+
+                <form action={% url 'timeline' %} method="post">
+                    {% csrf_token %}
+                    {% if t != 1 %}
+                    <input type="hidden" name=profile_idd value="{{i.user_id.id}}" />
+                    {% endif %}
+                    <button type="submit" class="text-sky-700  text-bold -ml-3  text-capitalize">{{i.user_id.completename}}</button>
+                    {% if t == 1 %}
+                    <input type="hidden" name=profile_idd value="{{i.id}}" />
+                    <button type="submit" class="text-sky-700  text-bold -ml-3  text-capitalize">{{i.completename}}</button>
+                    <p class="ml-3">{{i.User_Type}}</p>
+                    {% endif %}
+                </form>
+
+
+
+                {% if t != 1 %}
+                <span>{{i.Posted_Date}}</span>
+                {% endif %}
+            </div>
+            {% if t != 1 %}
+            {% comment %} delete and update {% endcomment %}
+             {% if ID == i.user_id.id %}
+            <div class="flex flex-row justify-end space-x-2 -mt-10 text-xl">
+                <button type="submit" onclick="delete_post(event,{{i.id}})" class="hover:text-sky-700 "><i class="fa fa-trash" ></i></button>
+                <button type="button" data-toggle="collapse" class="hover:text-sky-700 " data-target="#demooooo{{i.id}}"><i class="fa fa-edit "></i></button> {% comment %}
+                <a href={% url 'update_post' i.id %} class="hover:text-sky-700"> <i class="fa fa-edit"></i></a> {% endcomment %}
+            </div>
+
+            {% endif %}
+            {% endif %}
+
+            {% if t == 1 %}
+            {% if ID == i.id %}
+            <div class="flex flex-row justify-end space-x-2 -mt-10 ">
+               
+            <button type="button"  class="hover:text-sky-700 rounded " >you
+              
+            </button> 
+
+           
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+
+
+
+
+
+       {% if  t != 1 %}
+        <div class="post-meta">
+
+            <!-- Question Area -->
+            <div class="mh-3 my-3 mx-1 w-full">
+                <p class="text-2xl text-black" id="updated_post_title{{i.id}}" style={word-wrap: break-word;}>{{i.Title | safe }}</p>
+            </div>
+
+            <div class="post-comt-box collapse mt-5" id="demooooo{{i.id}}">
+
+                <input type="hidden" id="update_post_user_id{{i.id}}" name=user_id value="{{request.session.user_id}}" />
+                <input type="hidden" id="update_post_post_id{{i.id}}" name=post_id value="{{i.id}}" />
+                <textarea class="bg-light " name="update_message" id="updated_message{{i.id}}" placeholder="{{i.Title}}"></textarea>
+                <label>
+                        <div class="add-smiles">
+                        <button type="submit" onclick="update_post(event,{{i.id}})" data-toggle="collapse" data-target="#demooooo{{i.id}}" class=" mb-4 btn-sm btn-info active rounded ">Update Query</button>
+                        
+                        </div>
+                        </label>
+
+            </div>
+
+
+
+
+
+
+            <!-- Tags Title -->
+            <div class="we-video-info ">
+
+                <ul>
+                    <li>
+
+                        <h3 class="text-lg font-semibold border-l-4 inline-flex  text-sky-700 border-sky-700 font-italic"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
+                              </svg> tags</h3>
+                    </li>
+                </ul>
+            </div>
+            <!-- Tage Generated will  goes here -->
+            <div class="we-video-info -mt-5">
+                <ul>
+                    <li>
+
+                        <button  class=" hover:bg-sky-700 hover:text-white cursor border-1 text-sky-700 border-sky-700 font-semibold px-2 rounded w-auto "><a href="{% url 'home' %}?q={{i.query_type}}"># {{i.query_type}} </a> </button> 
+                    </li>
+
+                </ul>
+            </div>
+
+            <!-- Reaction Will Goes Here -->
+
+
+
+
+
+
+
+
+
+           
+            <div class="we-video-info -mt-5">
+                <ul class="pl-4 border-b-2 rounded-5 border-sky-600 pt-2 shadow-b-md">
+                   
+
+
+                    
+                    <li class="-ml-5 pb-1 mb-1">
+                        <span class=" pt-4 text-gray-600" data-toggle="tooltip" title="like">
+                               
+                                
+                                
+                                <button onclick="like_button(event,{{i.id}},{{currentid.id}})">
+                                    <input type="hidden" name=user_id id="user_who_posted_like{{i.id}}" value="{{i.user_id.id}}" />
+                                    <i id="like_button_color{{i.id}}" class="fa fa-thumbs-up text-4xl transition duration-200 hover:-translate-y-1 text-sky-800 hover:scale-105 hover:text-sky-700 mt-1"></i>
+                                    
+                                    <ins class="ml-1 mt-1" id="like_post{{i.id}}" >{{i.like}}</ins>
+                                </button>
+
+                                
+                            </span>
+                    </li>
+                    <li class="-ml-9 flex flex-row ">
+                        <span class="text-gray-600 pt-4 " data-toggle="tooltip" title="dislike">
+                        
+                                
+
+                                <button class="space-x-2" onclick="unlike_button(event,{{i.id}},{{currentid.id}})">
+                                    <i id="unlike_button_color{{i.id}}" class="fa fa-thumbs-down text-4xl transition duration-200 hover:translate-y-1 text-rose-900 hover:scale-105 hover:text-rose-700 mt-1"></i>
+                                    <input type="hidden" name=user_id id="user_who_posted_dislike{{i.id}}" value="{{i.user_id.id}}" />
+                                    <ins class="ml-1 mt-1" id="unlike_post{{i.id}}" >{{i.unlike}}</ins>
+                                </button>
+                                
+                        </span>
+
+                    </li>
+
+                    <li class="-ml-8">
+
+                        <span class="comment text-gray-600 pt-4 " title="Comments">
+                                <i class="fa fa-comment text-4xl transition duration-200 hover:translate-y-1 text-gray-500 hover:scale-105 hover:text-gray-600 mt-1 "  data-toggle="collapse" data-target="#comment_section{{i.id}}" ></i>
+                                
+                                {% comment %} <img class="w-8 h-8 -mb-5  border-none  transition duration-200 hover:translate-y-1 hover:scale-105 " data-toggle="collapse" data-target="#comment_section{{i.id}}" src="../media/comment.png" alt=""> {% endcomment %}
+                                <ins class=" ml-1 mt-1" id="comment_less{{i.id}}" >{{i.comment_count}}</ins>
+                            </span>
+                    </li>
+
+
+
+                </ul>
+
+            </div>
+         
+
+        </div>
+        {% endif %}
+
+    </div>
+    {% if t != 1 %}
+    <div id="comment_section{{i.id}}" class="coment-area collapse">
+
+        <ul class="we-comet">
+            {% for j in comment %}
+            <div id="delete_comment{{j.id}}" class="mt-3">
+                {% if j.post_id.id == i.id %}
+
+                <li>
+
+
+                   
+
+
+                    <div class="comet-avatar">
+                        {% if j.user_id.User_Image %}
+                        
+                        <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ j.user_id.User_Image.url }} alt=""> {% else %}
+                        <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg"> {% endif %}
+                    </div>
+
+                    <div class="we-comment">
+                        <form action={% url 'timeline' %} method="post">
+                            {% csrf_token %}
+                        <div class="coment-head ">
+
+                            
+                      
+                                
+                                <input type="hidden" name=profile_idd value="{{j.user_id.id}}" />
+                                
+                                <button type="submit" class="text-sky-700  text-bold -ml-3  text-capitalize">{{j.user_id.completename}}</button>
+                                <span>{{j.date_comment | naturaltime}}</span>
+
+                            
+                            
+
+
+                            <button type="button" data-toggle="collapse" class="btn-sm" data-target="#demo{{j.id}}"><i class="fa fa-reply text-info"></i></button> {% if ID == j.user_id.id %}
+                        
+                            <div class="flex flex-row justify-end -mt-7 space-x-2">
+                                <button onclick="deletecomment_comment(event,{{j.id}},{{i.id}})" class="hover:text-sky-700 ">
+                                    <i class="fa fa-trash" ></i>
+                                </button>
+                                <button type="button" data-toggle="collapse" class="hover:text-sky-700 " data-target="#demoo{{j.id}}"><i class="fa fa-edit "></i></button>
+                            </div>
+
+                            {% endif %}
+                        </div>
+                    </form>
+
+
+
+                        <p id="updated_comment_title{{j.id}}">
+                            {{j.message}}
+                        </p>
+
+                        {% comment %} update comment {% endcomment %}
+                        <div class="post-comt-box collapse mt-5" id="demoo{{j.id}}">
+
+
+
+                            <input type="hidden" id="update_comment_user_id{{j.id}}" name=user_id value="{{request.session.user_id}}" />
+                            <input type="hidden" id="update_comment_post_id{{j.id}}" name=reply_id value="{{j.id}}" />
+                            <textarea class="bg-light" name="update_message" id="updated_comment{{j.id}}" placeholder="{{j.message}}"></textarea>
+                            <label>
+                                <div class="add-smiles">
+
+                                <button type="submit" onclick="update_comment(event,{{j.id}})"  data-toggle="collapse"  data-target="#demoo{{j.id}}" class=" mb-4 btn-xs btn-info active px-2 py-2 rounded ">Update</button>
+                                </div>
+                                </label>
+
+                        </div>
+
+
+
+
+
+
+
+
+
+                        <div class="post-comt-box collapse mt-5" id="demo{{j.id}}">
+                            <form action={% url 'reply_comment' %} method=POST>
+                                {% csrf_token %}
+                                <input type="hidden" name=user_id value="{{request.session.user_id}}" />
+                                <input type="hidden" name=reply_id value="{{j.id}}" />
+                                <textarea class="bg-light " name="reply_message" placeholder="Post your Reply"></textarea>
+                                <label>
+                                <div class="add-smiles">
+                                <button type="submit" class="btn-xs btn-info active px-2 py-2 rounded ">Reply</button>
+                                </div>
+                                </label>
+
+
+
+                            </form>
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </li>
+                {% comment %} replyyyyyyyyyyyyyyyyyyyyyyyyyyy {% endcomment %}
+
+                <div class="ml-16 mr-4">
+                    {% for k in comment %} {% if j.id == k.parent %}
+
+
+                    <div id="delete_reply{{k.id}}" class="mt-3">
+
+                        <div class="comet-avatar">
+                            {% if k.user_id.User_Image %}
+                            
+                            <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ k.user_id.User_Image.url }} alt=""> {% else %}
+                            <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg"> {% endif %}
+                        </div>
+
+
+                        <div class="we-comment ">
+                            <form action={% url 'timeline' %} method="post">
+                                {% csrf_token %}
+                                
+                            <div class="coment-head">
+                               
+                                    <input type="hidden" name=profile_idd value="{{k.user_id.id}}" />
+                                    
+                                    <button type="submit" class="text-sky-700  text-bold -ml-3  text-capitalize">{{k.user_id.completename}}</button>
+    
+                                
+                                {% comment %} <h5><a href="time-line.html" title="">{{k.user_id.Name}}</a></h5> {% endcomment %}
+                                <span>{{k.date_comment | naturaltime}}</span> {% if ID == k.user_id.id %}
+                                <div class="flex flex-row justify-end -mt-7 space-x-2">
+                                    <button onclick="deletecomment(event,{{k.id}})" class="hover:text-sky-700 ">
+                                    <i class="fa fa-trash" ></i>
+                                </button>
+
+                                    <button type="button" data-toggle="collapse" class="hover:text-sky-700" data-target="#demooo{{k.id}}"><i class="fa fa-edit "></i></button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </form>
+
+
+
+
+                            <p id="updated_comment_title{{k.id}}">
+                                {{k.message}}
+                            </p>
+
+                            <div class="post-comt-box collapse mt-5" id="demooo{{k.id}}">
+
+
+
+
+                                <input type="hidden" id="update_comment_user_id{{k.id}}" name=user_id value="{{request.session.user_id}}" />
+                                <input type="hidden" id="update_comment_post_id{{k.id}}" name=reply_id value="{{k.id}}" />
+
+                                <textarea class="bg-light " name="update_message" id="updated_comment{{k.id}}" placeholder="{{k.message}}"></textarea>
+                                <label>
+                            <div class="add-smiles">
+                            <button type="submit" onclick="update_comment(event,{{k.id}})" data-toggle="collapse" data-target="#demooo{{k.id}}" class="btn-xs mb-3  btn-info active px-2 py-2 rounded ">Update</button>
+                            </div>
+                            </label>
+
+
+
+                                </form>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+                    {% comment %} reply ends here {% endcomment %}
+                    <br> {% endif %} {% endfor %}
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <!-- <li>
+                    <a href="#" title="" class="showmore underline">more comments</a>
+                </li> -->
+            <li class="post-comment mt-2 border-none">
+                <div class="flex flex-row">
+                    <div class="comet-avatar">
+                        {% if user_data.User_Image %}
+                        <img class="card-img-top -pl-3" style=" vertical-align: middle;width:50px;height: 44px;border-radius: 50%;" src={{ user_data.User_Image.url }} alt=""> {% else %}
+                        <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg"> {% endif %}
+                    </div>
+
+                    <div class="post-comt-box">
+                        
+                            <input type="hidden" name=user_id id="comment_user_id{{i.id}}" value="{{request.session.user_id}}" />
+
+
+                            <textarea class="bg-light " class="caret-sky-700 border rounded" name="message" placeholder="Post your comment" id="comment_value{{i.id}}"></textarea>
+                            <label>
+
+                                
+                                </label> {% comment %} </form> {% endcomment %}
+                    </div>
+                    <div>
+                        
+                        <input type="hidden" name=user_id id="user_who_posted{{i.id}}" value="{{i.user_id.id}}" />
+                        <button type="submit" onclick="comment_save(event,{{i.id}})" class="my-2 ml-2 px-2 py-1 btn-info  active hover:bg-gray-400 rounded ">Comment</button>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+
+
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+ <div class="col-lg-3">
+      <aside class="sidebar static">
+
+      
+
+        <div class="widget ">
+            <h4 class="widget-title">Edit info</h4>
+            <ul class="naves">
+                <li>
+                    <i class="ti-info-alt"></i>
+                    <a href="{% url 'edit' %}?vl=1 ">Basic info </a>
+                   
+                </li>
+                 <li>
+                    <i class="ti-mouse-alt"></i>
+                    <a href="{% url 'edit' %}?vl=2 ">Education & Work </a>
+              
+                </li>
+                <li>
+                    <i class="ti-heart"></i>
+                    <a href="{% url 'edit' %}?vl=3 ">My interests </a>
+             
+                </li>
+               
+                <li>
+                    <i class="ti-lock"></i>
+                
+                    <a href={% url 'changepassword' %} title="">change password</a>
+                </li>
+            </ul>
+        </div><!-- settings widget -->
+
+
+
+
+
+        <div class="widget  shadow-md stick-widget ">
+            <h4 class="widget-title">Who's follownig</h4>
+            <div   id="searchDir" class="mb-3"></div>
+            
+            {% if follow_data_count != 0 %}
+            {% for p in follow_data %}
+
+            
+
+                <ul id="people-list" class="followers friendz-list" >
+                   <div>
+                    <li >
+                        
+                    <figure  >
+                        {% if p.whos_following.User_Image %}
+                        <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ p.whos_following.User_Image.url}} alt="">
+                         {% else %}
+                          <img class="card-img-top" style=" vertical-align: middle;width: 60px;height: 60px;border-radius: 50%;" src="static\images\resources\no-profile.jpg">
+        
+                         {% endif %}
+                    </figure>
+                    <div class="friendz-meta">
+                    
+                        <h4>
+
+                            <form action={% url 'timeline' %} method="post">
+                                {% csrf_token %}
+                                <input type="hidden"  name=profile_idd value="{{p.whos_following.id}}"/>
+                            <button type="submit"   class="text-sky-700  text-bold -ml-3  text-capitalize" >{{p.whos_following.completename}}</button>
+                            <p class="ml-1">{{p.whos_following.User_Type}}</p>
+                            </form>
+                      </h4>
+                    
+                    </div>
+                
+
+                </li>
+            </div>
+                                                              
+            </ul>
+
+            {% endfor %}
+           
+            {% comment %} {% else %}
+            <p>No Contacts Found</p>
+            {% endif %} {% endcomment %}
+        </div>
+        <!-- who's following -->
+       
+        
+    </aside>
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+
+
+
+
+<script>
+    function follow_user_back(event,user_id,current_id) 
+    {
+                                            
+
+    var text=document.getElementById("followbutton"+user_id).innerText
+   
+    
+    
+    if (text == "Follow Back")
+    {
+    document.getElementById("followbutton"+user_id).innerText="Followed"
+    let txt='UnFollow'
+    postdata={
+        "CHECK_FOLLOW":txt,
+        "user_id":user_id,
+        "current_id":current_id,
+        
+        
+        
+    }
+       SendDataToServer("follow",postdata,function()
+         {
+          alert()
+          }) 
+                                                
+      }
+                                            
+                            
+                                            
+     }
+                                        
+
+    function delete_post(event, id) {
+
+
+        postdata = {
+
+            "post_id": id
+        }
+        SendDataToServer("delete_post", postdata, function(code) {
+
+
+        })
+        $("#delete_post_complete" + id).remove();
+
+    }
+
+    function deletecomment_comment(event, id,i) {
+        
+        var obj = this;
+        var count = $("#comment_less" + i).html();
+        
+        count--;
+        
+
+        postdata = {
+
+            "post_id": id,
+            "i":i
+
+        }
+        SendDataToServer("delete_comment", postdata, function(code) {
+
+
+        })
+        $("#delete_comment" + id).remove();
+        document.getElementById("comment_less" + i).innerHTML = count;
+
+    }
+
+
+
+
+
+
+
+
+
+    function deletecomment(event, id) {
+        var obj = this;
+        
+
+        postdata = {
+
+            "post_id": id
+        }
+        SendDataToServer("delete_comment", postdata, function(code) {
+
+
+        })
+        $("#delete_reply" + id).remove();
+
+    }
+
+    function update_comment(event, id) {
+        var user_id = $("#update_comment_user_id" + id).val()
+        var post_id = $("#update_comment_post_id" + id).val()
+        var message = $("#updated_comment" + id).val();
+        postdata = {
+            "message": message,
+            "user_id": user_id,
+            "post_id": post_id
+        }
+        if (message == "") {
+
+            return;
+        }
+
+        SendDataToServer("update_comment", postdata, function() {
+
+        })
+        $("#updated_comment" + id).val(" ")
+        document.getElementById("updated_comment_title" + id).innerHTML = message;
+
+
+    }
+
+    function timeline_to_profile(event, id) {
+        postdata = {
+
+            "user_id": id
+
+        }
+
+
+
+        SendDataToServer("timeline", postdata, function() {
+
+        })
+    }
+
+    function update_post(event, id) {
+
+
+        var user_id = $("#update_post_user_id" + id).val()
+        var post_id = $("#update_post_post_id" + id).val()
+        var message = $("#updated_message" + id).val();
+        if (message == "") {
+
+            return;
+        }
+
+        postdata = {
+            "message": message,
+            "user_id": user_id,
+            "post_id": post_id
+        }
+
+        SendDataToServer("updated_query", postdata, function() {
+
+        })
+        $("#updated_message" + id).val(" ")
+        document.getElementById("updated_post_title" + id).innerHTML = message;
+
+
+
+
+    }
+
+
+    function like_button(event, id,userid) {
+       
+        var like_count = $("#like_post" + id).html();
+        like_count++;
+        
+        var user_who_posted = $("#user_who_posted_like" + id).val();
+        
+        
+        var type='like'
+        postdata = {
+
+            "post_id": id,
+            "user_id":userid,
+            "user_who_posted":user_who_posted,
+            "type":type
+        }
+        SendDataToServer("like", postdata, function(dict) {
+
+        })
+        document.getElementById("like_post" + id).innerHTML = like_count;
+        $("#like_button_color" + id).toggleClass("text-sky-800");
+
+
+
+
+    }
+
+    function unlike_button(event, id,userid) {
+       
+        var unlike_count = $("#unlike_post" + id).html();
+        unlike_count++;
+        var user_who_posted = $("#user_who_posted_dislike" + 
+        id).val();
+        var type='dislike'
+        postdata = {
+
+            "post_id": id,
+            "user_id":userid,
+            "user_who_posted":user_who_posted,
+            "type":type
+        }
+        SendDataToServer("dislike", postdata, function(dict) {
+
+        })
+        document.getElementById("unlike_post" + id).innerHTML = unlike_count;
+        $("#unlike_button_color" + id).toggleClass("text-rose-900");
+
+
+
+    }
+
+
+
+
+
+    function comment_save(event, post_id)
+
+    {
+        var comment_value = $("#comment_value" + post_id).val();
+        var user_who_posted = $("#user_who_posted" + post_id).val();
+        var type='comment'
+        
+        var user_id = $("#comment_user_id" + post_id).val()
+
+        postdata = {
+            "comment_value": comment_value,
+            "user_id": user_id,
+            "post_id": post_id,
+            'user_who_posted':user_who_posted,
+            "type":type
+        }
+        SendDataToServer("readmore", postdata, function() {
+            alert()
+        })
+
+        $("#comment_value" + post_id).val(" ")
+        document.location.reload()
+
+
+
+    }
+
+    function SendDataToServer(url, PostData, callback) {
+
+
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: url,
+            data: PostData,
+            success: function(data) {
+                if (callback) {
+
+                    callback(data);
+                }
+            },
+            error: function(data) {}
+        });
+    }
+</script>

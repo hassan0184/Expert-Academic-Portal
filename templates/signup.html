@@ -1,0 +1,377 @@
+
+
+{% load static %}
+{% load humanize %}
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" href={% static '../media/logo.png' %} type="image/png" sizes="16x16">
+        <link rel="stylesheet" href="../static/css/main.min.css">
+        <link rel="stylesheet" href="../static/css/style.css">
+        <link rel="stylesheet" href="../static/css/color.css">
+        <link rel="stylesheet" href="../static/css/responsive.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      
+        <title>Expert Academic Portal: Sign-Up</title>
+       
+        
+       
+    </head>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Muli:300,400,400i,500,700,800');
+        .font-family-muli {
+            font-family: Muli;
+        }
+        
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: rgb(3 105 161);
+        }
+        
+        body {
+            margin: 0;
+            place-items: center;
+            min-height: 100vh;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step-active {
+            display: block;
+        }
+        
+        .progressbar {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            counter-reset: step;
+            margin: 2rem 0 4rem;
+        }
+        
+        .progressbar::before,
+        .progress {
+            content: "";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: #dcdcdc;
+            z-index: -1;
+        }
+        
+        .progress {
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: 0.3s;
+        }
+        
+        .progress-step {
+            width: 2.1875rem;
+            height: 2.1875rem;
+            background-color: #dcdcdc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .progress-step::before {
+            counter-increment: step;
+            content: counter(step);
+        }
+        
+        .progress-step::after {
+            content: attr(data-title);
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .progress-step-active {
+            background-color: var(--primary-color);
+            color: #f3f3f3;
+        }
+    </style>
+
+    <body class="">
+        <center>
+            {% if messages %}
+              {% for i in messages %}
+             <script> swal("{{ i }}")
+            
+             </script>
+             
+              {% endfor %}
+            
+            {% endif %}
+        </center> 
+       
+        <div>
+
+            <h3 class="text-2xl md:text-5xl text-center py-3 text-white bg-sky-700 shadow-md">Create an Account</h3>
+            
+        </div>
+        <div class="container">
+
+            <div class="progressbar">
+                <div class="progress" id="progress"></div>
+
+                <div class="progress-step progress-step-active " data-title="Intro"></div>
+                <div class="progress-step" data-title="Education"></div>
+                <div class="progress-step" data-title="Interests"></div>
+
+
+            </div>
+
+            <div class="bg-white  rounded ">
+
+                <div class="flex flex-row  md:px-5">
+                    <!-- Basic Info 000000000000000000000000000000000000000000000000000000000000-->
+                    <div class="central-meta w-75 mx-0 md:w-48 lg:w-48 md:mx-20 mt-3 form-step mx-auto form-step-active">
+                        <div class="editing-info">
+                            <h5 class="f-title"><i class="ti-info-alt"></i>Basic Information</h5>
+
+                            <form action={% url 'newRegestrations' %} method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    
+                                    <input type="text" id="username"  value="{{value.user_name}}" name="name" required="required" />
+                                    <label class="control-label" for="username">User Name</label><i class="mtrl-select"></i>
+                                    
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" id="firstname"   value="{{value.complete_username}}" name="completename" required="required" />
+                                    <label class="control-label" for="firstname">First & Last Name</label><i class="mtrl-select"></i>
+                                    <p class="text-danger">{{msg}} <p/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email"   name="email" required="required" />
+                                    <label class="control-label"><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="_cf_email_" data-cfemail="6c29010d05002c">[email&#160;protected]</a></label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="p" name="password" required="required" />
+                                    <label class="control-label" for="p">Password</label><i class="mtrl-select"></i>
+                                    
+                                    <p class="text-danger">{{psd_msg}} <p/>
+                                </div>
+
+
+
+
+
+                                <div class="form-group">
+                                    <input type="number" id="phoneno"  value="{{value.phoneno}}" name="phoneno" required="required" />
+                                    <label class="control-label" for="phoneno">Phone No.</label><i class="mtrl-select"></i>
+                                </div>
+
+                                <div class="form-radio form-group half">
+                                    <div class="radio">
+                                        <label>
+                                          <input type="radio" checked="checked" name="gender" value="Male"><i class="check-box"></i>Male
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                         <input type="radio" name="gender" value="FeMale"><i class="check-box"></i>Female
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group half">
+                                    <input type="date" id="dob" name="dob" required="required" />
+                                    <label class="control-label" for="dob">D.O.B</label><i class="mtrl-select"></i>
+                                </div>
+
+                                <div class=" form-group checkbox flex flex-column md:flex-row space-x-1 md:space-x-3  mt-5">
+                                    <label>
+                    <input type="checkbox" name="usertype" value="Student"  checked="checked"><i class="check-box"></i>Student
+                    </label>
+                                    <label>
+                      <input type="checkbox" name="usertype" value="Teacher" ><i class="check-box"></i>Teacher
+                      </label>
+                                    <label>
+                        <input type="checkbox" name="usertype" value="Researcher" ><i class="check-box"></i>Researcher
+                        </label>
+                                    <label>
+                          <input type="checkbox" name="usertypetype" value="Developer" ><i class="check-box"></i>Developer
+                          </label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="usercity"  value="{{value.usercity}}" name="usercity" required="required" />
+                                    <label class="control-label" for="usercity">City</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="usercountry"  value="{{value.usercountry}}" name="usercountry" required="required" />
+                                    <label class="control-label" for="usercountry">Country</label><i class="mtrl-select"></i>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <textarea rows="4" id="aboutme" name="useraboutme" required="required"></textarea>
+                                    <label class="control-label" for="aboutme">About Me</label><i class="mtrl-select"></i>
+                                </div>
+
+
+                        </div>
+                        <div class=" btns-group flex flex-row justify-content-end">
+                            <button type="button" class="btn btn-next bg-sky-700 text-lg rounded hover:bg-sky-600 text-white hover:scale-105 transition-all duration-200 px-5 py-1">next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step w-75 mx-auto my-2">
+                        <div class="central-meta w-100 mx-auto">
+                            <div class="editing-info 	">
+                                <h5 class="f-title"><i class="ti-info-alt"></i>work & Education</h5>
+
+
+                                <div class="checkbox flex flex-row space-x-3 ">
+                                    <label>
+                      <input type="checkbox" name="educationtype" value="Graduate" checked="checked"><i class="check-box"></i>Graduate
+                      </label>
+                                    <label>
+                        <input type="checkbox" name="educationtype" value="Masters"><i class="check-box"></i>Masters
+                        </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" id="uni"  value="{{value.currentuni}}" name="currentuni" required="required" />
+                                    <label class="control-label" for="uni">Studying at</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group half">
+                                    <input type="date" id="fromdate" name="current_edu_from" required="required" />
+                                    <label class="control-label" for="fromdate">From</label><i class="mtrl-select"></i>
+
+                                </div>
+                                <div class="form-group half">
+                                    <input type="date" id="todate" name="current_edu_to" required="required" />
+                                    <label class="control-label" for="todate">To</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="edu_city"  value="{{value.edu_city}}" name="edu_city" required="required" />
+                                    <label class="control-label" for="edu_city">City</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="edu_country"  value="{{value.edu_country}}" name="edu_country" required="required" />
+                                    <label class="control-label" for="edu_country">Country</label><i class="mtrl-select"></i>
+                                </div>
+
+
+
+                            </div>
+                            <div class="btns-group flex space-x-2 sm:space-x-10 flex-row justify-content-between">
+                                <button type="button" class="btn btn-prev bg-gray-500 text-lg rounded hover:bg-gray-800 text-white hover:scale-105 transition-all duration-200 px-2 md:px-4 py-1">Previous</button>
+                                <button type="button" class="btn btn-next bg-sky-700 text-lg rounded hover:bg-sky-600 text-white hover:scale-105 transition-all duration-200 px-4 md:px-5 py-1">next</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-step w-75 mx-auto my-2">
+
+                        <div class="central-meta w-100 mx-auto">
+                            <div class="editing-interest">
+                                <h5 class="f-title"><i class="ti-heart"></i>My interests</h5>
+
+
+                                <label for="interest">Add interests: </label>
+                                <!-- <input type="text" placeholder="Photography, Cycling, traveling."> -->
+                                <textarea name="user_interest" id="interest" cols="30" rows="10" placeholder="Write about Your domain of intrests..." required="required"></textarea>
+
+
+                                <div class="btns-group flex flex-row justify-content-between">
+                                    <button type="button" class="btn btn-prev bg-gray-500 btn-sm md:btn-md text-lg rounded hover:bg-gray-800 text-white hover:scale-105 transition-all duration-200 px-2 md:px-4 py-1">Previous</button>
+                                    <button type="submit" class="btn  bg-sky-700 text-lg btn-sm md:btn-md rounded hover:bg-sky-600 text-white hover:scale-105 transition-all duration-200 px-2 md:px-5 py-1" >Submit</button>
+                                </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <script>
+                const prevBtns = document.querySelectorAll(".btn-prev");
+                const nextBtns = document.querySelectorAll(".btn-next");
+                const progress = document.getElementById("progress");
+                const formSteps = document.querySelectorAll(".form-step");
+                const progressSteps = document.querySelectorAll(".progress-step");
+
+                let formStepsNum = 0;
+
+                nextBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        formStepsNum++;
+                        updateFormSteps();
+                        updateProgressbar();
+                    });
+                });
+
+                prevBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        formStepsNum--;
+                        updateFormSteps();
+                        updateProgressbar();
+                    });
+                });
+
+                function updateFormSteps() {
+                    formSteps.forEach((formStep) => {
+                        formStep.classList.contains("form-step-active") &&
+                            formStep.classList.remove("form-step-active");
+                    });
+
+                    formSteps[formStepsNum].classList.add("form-step-active");
+                }
+
+                function updateProgressbar() {
+                    progressSteps.forEach((progressStep, idx) => {
+                        if (idx < formStepsNum + 1) {
+                            progressStep.classList.add("progress-step-active");
+                        } else {
+                            progressStep.classList.remove("progress-step-active");
+                        }
+                    });
+
+                    const progressActive = document.querySelectorAll(".progress-step-active");
+
+                    progress.style.width =
+                        ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+                }
+            </script>
+    </body>
+
+    </html>

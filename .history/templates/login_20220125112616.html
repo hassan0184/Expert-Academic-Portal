@@ -1,0 +1,67 @@
+{% load static %}
+{% include 'header_login.html' %}
+<h2 class="text-5xl text-center">Login</h2>
+<center>
+	{% if messages %}
+	  {% for i in messages %}
+	 <script> swal("{{ i }}")
+	
+	 </script>
+	 
+	  {% endfor %}
+	
+	{% endif %}
+</center>                    
+<form action={% url 'login' %} method="POST">
+
+	{% csrf_token %}
+     
+	<div class="form-group">	
+							  <input type="email" id="input"  name="useremail" value="{{email_user.user_email}}" required="required"/>
+							  <label class="control-label" for="input">Email</label><i class="mtrl-select"></i></label>
+							</div>
+							<div class="form-group">	
+							  <input type="password" id="password" name="userpassword" required="required"/>
+							  <label class="control-label" for="password">Password</label><i class="mtrl-select"></i></label>
+							</div>
+							<div class="checkbox">
+							  <label>
+								<input type="hidden" id="USER_TYPE" name="user_change" value="user"/>
+
+								<input type="checkbox" checked="checked"/><i class="check-box"></i>Always Remember Me.
+							  </label>
+							</div>
+							<a href="/forgetpassword" title="" class="forgot-pwd">Forgot Password?</a>
+							<div class="submit-btns">
+                                
+								<button class="bg-sky-700 hover:bg-sky-800 transition-all duration-300 hover:scale-105 rounded py-2 px-4" type="submit"><span>Login</span></button>
+                                
+								<button class="bg-sky-700 hover:bg-sky-800 rounded transition-all duration-300 hover:scale-105  py-2 px-4" type="button"><span><a href="/signup" >Join now</a></span></button>
+								
+							</div>
+							{% include 'footer_login.html' %}
+							
+							<button onclick="change_user()" class="bg-sky-700 hover:bg-sky-800 transition-all btn-sm duration-300 hover:scale-105 rounded py-2 px-4 float-right text-white" id="myButton1" type="submit"><span>Click For Admin Login</span></button>
+							<script>
+								function change_user()
+								{
+									
+									var text=document.getElementById("myButton1").innerText
+									
+									if (text == "Click For Admin Login")
+									{
+										document.getElementById("myButton1").innerText="Click For User Login"
+										document.getElementById("USER_TYPE").value="admin"
+										swal("Mode Changed!", ", You Are In Admin Mode!", "success");
+									}
+									else {
+										document.getElementById("myButton1").innerText="Click For Admin Login"
+										document.getElementById("USER_TYPE").value="user"
+										swal("Mode Changed!", ", You Are In User Mode!", "success");
+									  }
+
+									
+								}
+					
+							
+							</script>

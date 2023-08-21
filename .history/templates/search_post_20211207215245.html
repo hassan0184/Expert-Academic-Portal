@@ -1,0 +1,138 @@
+{% include 'header.html' %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Blog Entries Column -->
+      <div class="col-md-8">
+
+        <h1 class="my-4 text-center">Search Results</h1>
+
+
+
+        <div class="container">
+          <div class="row ">
+            <div class="col-12 ">
+        <!-- Search Widget -->
+        <form action={% url 'search_post' %} method=POST>
+          {% csrf_token %} 
+        <div class="input-group rounded">
+          <input type="search" class="form-control rounded" name="search" placeholder="Search" aria-label="Search"
+          aria-describedby="search-addon" />
+          <button class="btn btn-warning input-group-text border-0" id="search-addon">
+            Go
+          </button>
+       
+        </div>
+      
+      </form>
+    
+   </div> 
+  </div>
+
+
+
+
+
+
+
+             {% if allposts|length <= 0 %} 
+            <p>
+                <main role="main" class="container"  >
+                    {% if messages %}
+                      {% for message in messages %}
+                        {% if message.tags == "error"%}
+                        <div class="alert alert-danger">
+                          {{ message }}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger">
+                          {{ message }}
+                        </div>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                Your search - {{query}} ... - did not match any documents.<br>
+
+                Suggestions:<br>
+                <br>
+                <ul>
+                    <li>Make sure that all words are spelled correctly</li>
+                    <li>Try different keywords</li>
+                    <li> Try more general keywords</li>
+                
+                </ul>
+
+            </p>
+        
+             {% endif %} 
+          
+        
+
+        <!-- Blog Post -->
+        {% for i in allposts %}
+          <div class="card mb-4 mt-5">
+            {% if i.Query_Image %}
+              <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{ i.Query_Image.url }} alt="">
+            {% endif %}
+          <div class="card-body">
+            <h2 class="card-title">{{i.Title}}</h2>
+            <p class="card-text">
+              {% load custom_tags %}
+              {% half_content i.Description as half_content%}
+              {{half_content}}  
+              {% comment %} {{i.Description}}  {% endcomment %}
+            </p>
+            <a href={% url 'readmore' i.id %} class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+            {{i.Posted_Date}}
+            <span class="alert-dark">{{i.Good_Name}}</span>
+              {% if ID == i.user_id.id %}
+              <span class="w3-padding w3-xlarge text-danger">
+                
+                <a href={% url 'delete_post' i.id %} class="btn btn-primary"> <i class="fa fa-trash" ></i></a>
+                <a href={% url 'update_post' i.id %} class="btn btn-primary"> <i class="fa fa-edit" ></i></a>
+                
+                {% endif %}
+               
+              </span>
+            
+          </div>
+
+          
+        </div>
+
+        {% endfor %}
+
+       
+
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
+          <li class="page-item">
+            <a class="page-link" href="#">&larr; Older</a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#">Newer &rarr;</a>
+          </li>
+        </ul>
+
+      </div>
+      <div>
+        <div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+   
+      <!-- Sidebar Widgets Column -->
+    
+
+{% include 'footer.html' %}

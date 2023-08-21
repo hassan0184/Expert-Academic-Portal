@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+    {% load humanize %}
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        <!-- Title -->
+      
+        
+        
+      
+        <!-- Author -->
+        <h1 class="mt-4">{{data.Title}}</h1>
+        {% if data.Query_Image %}
+        <img class="card-img-top" style=" vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" src={{data.Query_Image.url}} alt="">
+
+
+        {% endif %}
+
+        <p class="lead">
+            by
+            <a href="#">{{data.Good_Name}}</a>
+          </p>
+  
+          <hr>
+  
+
+        <!-- Date/Time -->
+        <p>{{data.Posted_Date}}</p>
+
+        <hr>
+
+        
+
+        <!-- Post Content -->
+        <p class="lead">{{data.Description}}</p>
+
+        
+
+       
+
+
+        <hr>
+        
+        <!-- Comments Form -->
+        <div class="card my-4">
+          <h5 class="card-header">Leave a Comment:</h5>
+          <div class="card-body">
+            <form action={% url 'readmore' data.id  %} method=POST>
+              {% csrf_token %}
+              <input type="hidden" name=user_id value="{{request.session.user_id}}"/>
+              <div class="form-group">
+                <textarea class="form-control" name="message" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class="container">
+          <h3>
+            Comments({{COUNT}})
+          </h3>
+        </div>
+                  {% for i in comment %}
+        
+        <div class="media mb-4">
+          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+          <div class="media-body">
+            <h5 class="mt-0">{{i.user_id.Name}}</h5>
+            {{i.message}}  
+                </div>
+                <code class="badge badge-secondary">{{i.date_comment | naturaltime}}</code>
+                {% if ID == i.user_id.id %}
+              <span class="w3-padding w3-xlarge text-danger">
+                
+                <a href={% url 'delete_comment' i.id %} class="btn btn-danger"> <i class="fa fa-trash" ></i></a>
+                <button type="button" class="btn  btn-success" data-toggle="collapse" data-target="#updatecomment{{i.id}}"><i class="fa fa-edit" ></i></button>
+              </div>
+
+                <div id="updatecomment{{i.id}}" class="collapse">
+                  <div class=" my-2 ml-5">
+                    <h5 class="card-header text-w3-text-black">Update Comment:</h5>
+                    <form action={% url 'update_comment' i.id  %} method=POST>
+                      {% csrf_token %}
+                      <input type="hidden" name=user_id value="{{request.session.user_id}}"/>
+                      <input type="hidden" name=reply_id value="{{i.id}}"/>
+    
+                      <div class="form-group">
+                        <input class="form-control" name="update_message" />
+                     
+                     </div>
+
+                      <button type="submit" class="text-light bg-success btn btn-sm ">Update</button>
+                    </form>
+                </div>
+                
+                 
+
+
+
+                
+                {% endif %}
+                
+      
+
+
+
+        
+                
+                
+                
+        </div>
+
+
+
+
+
+
+
+        <div class="reply mx-0 ml-5 m-3">
+          
+        
+
+
+          <div class="container">
+            
+            
+            
+             
+            <button type="button" class="btn  btn-primary" data-toggle="collapse" data-target="#demo{{i.id}}">Reply</button>
+            <a href={% url 'home' %}><button type="button" class="btn  btn-primary" >Watch Reply's</button></a>
+            
+            <div id="demo{{i.id}}" class="collapse">
+              <div class=" my-2 ml-5">
+                <h5 class="card-header">Reply Comment:</h5>
+                <form action={% url 'reply_comment'  %} method=POST>
+                  {% csrf_token %}
+                  <input type="hidden" name=user_id value="{{request.session.user_id}}"/>
+                  <input type="hidden" name=reply_id value="{{i.id}}"/>
+
+                  <div class="form-group">
+                    <input class="form-control" name="reply_message"/>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+          </div>
+          </div>
+          
+         
+        </div>
+
+       
+        {% endfor %}
+        
+        </div>
+
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+     
+
+      </div>
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  {% include 'footer.html' %}
